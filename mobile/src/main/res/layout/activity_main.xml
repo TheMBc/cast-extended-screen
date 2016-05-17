@@ -4,4 +4,11 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/toolbar_simple" />
+
+    <Button
+        android:id="@+id/main_button"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:text="+1" />
 </FrameLayout>
