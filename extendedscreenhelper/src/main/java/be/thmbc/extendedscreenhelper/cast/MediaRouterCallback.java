@@ -1,4 +1,4 @@
-package be.thmbc.castextendedscreen.cast;
+package be.thmbc.extendedscreenhelper.cast;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,9 +9,8 @@ import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.api.Status;
 
-import be.thmbc.castextendedscreen.BuildConfig;
-import be.thmbc.castextendedscreen.service.PresentationService;
-import be.thmbc.castextendedscreen.ui.main.MainActivity;
+import be.thmbc.extendedscreenhelper.CastManager;
+import be.thmbc.extendedscreenhelper.service.PresentationService;
 
 /**
  * Created by maarten on 17/05/16.
@@ -41,8 +40,7 @@ public class MediaRouterCallback extends MediaRouter.Callback {
     @Override
     public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
         device = CastDevice.getFromBundle(info.getExtras());
-        Intent intent = new Intent(context,
-                MainActivity.class);
+        Intent intent = new Intent(context, CastManager.getInstance().getCastActivity());
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
@@ -52,8 +50,10 @@ public class MediaRouterCallback extends MediaRouter.Callback {
 
         CastRemoteDisplayLocalService.startService(
                 context,
-                PresentationService.class, BuildConfig.CAST_APP_ID,
-                device, settings,
+                PresentationService.class,
+                CastManager.getInstance().getCastAppId(),
+                device,
+                settings,
                 new CastRemoteDisplayLocalService.Callbacks() {
                     @Override
                     public void onServiceCreated(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
@@ -61,8 +61,7 @@ public class MediaRouterCallback extends MediaRouter.Callback {
                     }
 
                     @Override
-                    public void onRemoteDisplaySessionStarted(
-                            CastRemoteDisplayLocalService service) {
+                    public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService service) {
                         // initialize sender UI
                     }
 

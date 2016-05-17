@@ -1,4 +1,4 @@
-package be.thmbc.castextendedscreen.cast;
+package be.thmbc.extendedscreenhelper.cast;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,8 +12,9 @@ import android.view.MenuItem;
 
 import com.google.android.gms.cast.CastMediaControlIntent;
 
-import be.thmbc.castextendedscreen.BuildConfig;
-import be.thmbc.castextendedscreen.R;
+import be.thmbc.extendedscreenhelper.CastManager;
+import be.thmbc.extendedscreenhelper.R;
+
 
 /**
  * Created by maarten on 17/05/16.
@@ -24,15 +25,13 @@ public class CastEnabledActivity extends AppCompatActivity {
     private MediaRouteSelector mediaRouteSelector;
     private MediaRouterCallback mediaRouterCallback;
     private MenuItem castButton;
-    private int availableRoutes = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mediaRouter = MediaRouter.getInstance(getApplicationContext());
         mediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast(BuildConfig.CAST_APP_ID))
+                .addControlCategory(CastMediaControlIntent.categoryForCast(CastManager.getInstance().getCastAppId()))
                 .build();
         mediaRouterCallback = new MediaRouterCallback(this);
     }
@@ -45,11 +44,6 @@ public class CastEnabledActivity extends AppCompatActivity {
         MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(castButton);
         mediaRouteActionProvider.setRouteSelector(mediaRouteSelector);
-        if (availableRoutes > 0) {
-            castButton.setVisible(true);
-        } else {
-            castButton.setVisible(false);
-        }
         return true;
     }
 

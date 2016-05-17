@@ -1,24 +1,23 @@
-package be.thmbc.castextendedscreen.service;
+package be.thmbc.extendedscreenhelper.service;
 
-import android.app.Presentation;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
-import be.thmbc.castextendedscreen.ui.cast.FirstScreenPresentation;
 
 /**
  * Created by maarten on 17/05/16.
  */
-public class PresentationService extends CastRemoteDisplayLocalService{
+public abstract class PresentationService<T extends CastPresentation> extends CastRemoteDisplayLocalService{
 
-    private Presentation presentation;
+    private T presentation;
 
     @Override
     public void onCreatePresentation(Display display) {
-        createPresentation(display);
+        createSecondScreen(display);
     }
 
     @Override
@@ -33,9 +32,11 @@ public class PresentationService extends CastRemoteDisplayLocalService{
         }
     }
 
-    private void createPresentation(Display display) {
+    protected abstract T createPresentation(Display display);
+
+    private void createSecondScreen(Display display) {
         dismissPresentation();
-        presentation = new FirstScreenPresentation(this, display);
+        presentation = createPresentation(display);
         try {
             presentation.show();
         } catch (WindowManager.InvalidDisplayException ex) {

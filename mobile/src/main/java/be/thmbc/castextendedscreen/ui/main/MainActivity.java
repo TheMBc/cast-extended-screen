@@ -7,7 +7,7 @@ import android.widget.Button;
 
 import be.thmbc.castextendedscreen.CastApplication;
 import be.thmbc.castextendedscreen.R;
-import be.thmbc.castextendedscreen.cast.CastEnabledActivity;
+import be.thmbc.extendedscreenhelper.cast.CastEnabledActivity;
 
 /**
  * Created by maarten on 12/05/16.
